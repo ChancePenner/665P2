@@ -1,8 +1,8 @@
-// A Bison parser, made by GNU Bison 3.5.1.
+// A Bison parser, made by GNU Bison 3.4.1.
 
 // Skeleton implementation for Bison LALR(1) parsers in C++
 
-// Copyright (C) 2002-2015, 2018-2020 Free Software Foundation, Inc.
+// Copyright (C) 2002-2015, 2018-2019 Free Software Foundation, Inc.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@
 
 
 // Unqualified %code blocks.
-#line 35 "negatron.yy"
+#line 34 "negatron.yy"
 
    #include <iostream>
    #include <cstdlib>
@@ -78,6 +78,9 @@
 #endif
 
 
+
+// Suppress unused-variable warnings by "using" E.
+#define YYUSE(E) ((void) (E))
 
 // Enable debugging if requested.
 #if YYDEBUG
@@ -126,7 +129,7 @@
 
 #line 5 "negatron.yy"
 namespace negatron {
-#line 130 "parser.cc"
+#line 133 "parser.cc"
 
 
   /* Return YYSTR after stripping away unnecessary quotes and
@@ -172,11 +175,10 @@ namespace negatron {
 
   /// Build a parser object.
   Parser::Parser (negatron::Scanner  &scanner_yyarg, negatron::ProgramNode** root_yyarg)
-#if YYDEBUG
-    : yydebug_ (false),
-      yycdebug_ (&std::cerr),
-#else
     :
+#if YYDEBUG
+      yydebug_ (false),
+      yycdebug_ (&std::cerr),
 #endif
       scanner (scanner_yyarg),
       root (root_yyarg)
@@ -309,7 +311,7 @@ namespace negatron {
     if (state == empty_state)
       return empty_symbol;
     else
-      return yystos_[+state];
+      return yystos_[state];
   }
 
   Parser::stack_symbol_type::stack_symbol_type ()
@@ -332,14 +334,6 @@ namespace negatron {
   }
 
 #if YY_CPLUSPLUS < 201103L
-  Parser::stack_symbol_type&
-  Parser::stack_symbol_type::operator= (const stack_symbol_type& that)
-  {
-    state = that.state;
-    value = that.value;
-    return *this;
-  }
-
   Parser::stack_symbol_type&
   Parser::stack_symbol_type::operator= (stack_symbol_type& that)
   {
@@ -467,6 +461,7 @@ namespace negatron {
   int
   Parser::parse ()
   {
+    // State.
     int yyn;
     /// Length of the RHS of the rule being reduced.
     int yylen = 0;
@@ -499,7 +494,7 @@ namespace negatron {
   | yynewstate -- push a new symbol on the stack.  |
   `-----------------------------------------------*/
   yynewstate:
-    YYCDEBUG << "Entering state " << int (yystack_[0].state) << '\n';
+    YYCDEBUG << "Entering state " << yystack_[0].state << '\n';
 
     // Accept?
     if (yystack_[0].state == yyfinal_)
@@ -513,7 +508,7 @@ namespace negatron {
   `-----------*/
   yybackup:
     // Try to take a decision without lookahead.
-    yyn = yypact_[+yystack_[0].state];
+    yyn = yypact_[yystack_[0].state];
     if (yy_pact_value_is_default_ (yyn))
       goto yydefault;
 
@@ -542,9 +537,7 @@ namespace negatron {
        to detect an error, take that action.  */
     yyn += yyla.type_get ();
     if (yyn < 0 || yylast_ < yyn || yycheck_[yyn] != yyla.type_get ())
-      {
-        goto yydefault;
-      }
+      goto yydefault;
 
     // Reduce or error.
     yyn = yytable_[yyn];
@@ -561,7 +554,7 @@ namespace negatron {
       --yyerrstatus_;
 
     // Shift the lookahead token.
-    yypush_ ("Shifting", state_type (yyn), YY_MOVE (yyla));
+    yypush_ ("Shifting", yyn, YY_MOVE (yyla));
     goto yynewstate;
 
 
@@ -569,7 +562,7 @@ namespace negatron {
   | yydefault -- do the default action for the current state.  |
   `-----------------------------------------------------------*/
   yydefault:
-    yyn = yydefact_[+yystack_[0].state];
+    yyn = yydefact_[yystack_[0].state];
     if (yyn == 0)
       goto yyerrlab;
     goto yyreduce;
@@ -604,82 +597,82 @@ namespace negatron {
           switch (yyn)
             {
   case 2:
-#line 132 "negatron.yy"
-        {
+#line 131 "negatron.yy"
+    {
 	(yylhs.value.transProgram) = new ProgramNode((yystack_[0].value.transDeclList));
 	*root = (yylhs.value.transProgram);
 	}
-#line 613 "parser.cc"
+#line 606 "parser.cc"
     break;
 
   case 3:
-#line 139 "negatron.yy"
-        {
+#line 138 "negatron.yy"
+    {
 	(yylhs.value.transDeclList) = (yystack_[1].value.transDeclList);
 	DeclNode * aGlobalDecl = (yystack_[0].value.transDecl);
 	(yystack_[1].value.transDeclList)->push_back(aGlobalDecl);
 	}
-#line 623 "parser.cc"
+#line 616 "parser.cc"
     break;
 
   case 4:
-#line 145 "negatron.yy"
-        {
+#line 144 "negatron.yy"
+    {
 	std::list<DeclNode *> * startingGlobals;
 	startingGlobals = new std::list<DeclNode *>();
 	(yylhs.value.transDeclList) = startingGlobals;
 	}
-#line 633 "parser.cc"
+#line 626 "parser.cc"
     break;
 
   case 5:
-#line 153 "negatron.yy"
-        {
+#line 152 "negatron.yy"
+    {
 	//Make sure to fill out this rule
 	// (as well as any other empty rule!)
 	}
-#line 642 "parser.cc"
+#line 635 "parser.cc"
     break;
 
   case 6:
-#line 159 "negatron.yy"
-        {
+#line 158 "negatron.yy"
+    {
 	size_t typeLine = (yystack_[2].value.transType)->line();
 	size_t typeCol = (yystack_[2].value.transType)->col();
 	(yylhs.value.transVarDecl) = new VarDeclNode(typeLine, typeCol, (yystack_[2].value.transType), (yystack_[1].value.transID));
 	}
-#line 652 "parser.cc"
+#line 645 "parser.cc"
     break;
 
   case 7:
-#line 166 "negatron.yy"
-        {
+#line 165 "negatron.yy"
+    {
 	bool isRef = (yystack_[0].value.transBool);
 	(yylhs.value.transType) = new IntTypeNode((yystack_[1].value.transToken)->line(), (yystack_[1].value.transToken)->col(), isRef);
 	}
-#line 661 "parser.cc"
+#line 654 "parser.cc"
     break;
 
   case 8:
-#line 182 "negatron.yy"
-        { (yylhs.value.transBool) = true; }
-#line 667 "parser.cc"
+#line 181 "negatron.yy"
+    { (yylhs.value.transBool) = true; }
+#line 660 "parser.cc"
     break;
 
   case 9:
-#line 184 "negatron.yy"
-        { (yylhs.value.transBool) = false; }
-#line 673 "parser.cc"
+#line 183 "negatron.yy"
+    { (yylhs.value.transBool) = false; }
+#line 666 "parser.cc"
     break;
 
   case 10:
-#line 187 "negatron.yy"
-        { (yylhs.value.transID) = new IDNode((yystack_[0].value.transIDToken)); }
-#line 679 "parser.cc"
+#line 186 "negatron.yy"
+    { (yylhs.value.transID) = new IDNode((yystack_[0].value.transIDToken)); }
+#line 672 "parser.cc"
     break;
 
 
-#line 683 "parser.cc"
+#line 676 "parser.cc"
 
             default:
               break;
@@ -760,11 +753,11 @@ namespace negatron {
       stack_symbol_type error_token;
       for (;;)
         {
-          yyn = yypact_[+yystack_[0].state];
+          yyn = yypact_[yystack_[0].state];
           if (!yy_pact_value_is_default_ (yyn))
             {
-              yyn += yy_error_token_;
-              if (0 <= yyn && yyn <= yylast_ && yycheck_[yyn] == yy_error_token_)
+              yyn += yyterror_;
+              if (0 <= yyn && yyn <= yylast_ && yycheck_[yyn] == yyterror_)
                 {
                   yyn = yytable_[yyn];
                   if (0 < yyn)
@@ -783,7 +776,7 @@ namespace negatron {
 
 
       // Shift the error token.
-      error_token.state = state_type (yyn);
+      error_token.state = yyn;
       yypush_ ("Shifting", YY_MOVE (error_token));
     }
     goto yynewstate;
@@ -854,7 +847,7 @@ namespace negatron {
   {
     // Number of reported tokens (one for the "unexpected", one per
     // "expected").
-    std::ptrdiff_t yycount = 0;
+    size_t yycount = 0;
     // Its maximum.
     enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
     // Arguments of yyformat.
@@ -878,18 +871,18 @@ namespace negatron {
        - Of course, the expected token list depends on states to have
          correct lookahead information, and it depends on the parser not
          to perform extra reductions after fetching a lookahead from the
-         scanner and before detecting a syntax error.  Thus, state merging
-         (from LALR or IELR) and default reductions corrupt the expected
-         token list.  However, the list is correct for canonical LR with
-         one exception: it will still contain any token that will not be
-         accepted due to an error action in a later state.
+         scanner and before detecting a syntax error.  Thus, state
+         merging (from LALR or IELR) and default reductions corrupt the
+         expected token list.  However, the list is correct for
+         canonical LR with one exception: it will still contain any
+         token that will not be accepted due to an error action in a
+         later state.
     */
     if (!yyla.empty ())
       {
-        symbol_number_type yytoken = yyla.type_get ();
+        int yytoken = yyla.type_get ();
         yyarg[yycount++] = yytname_[yytoken];
-
-        int yyn = yypact_[+yystate];
+        int yyn = yypact_[yystate];
         if (!yy_pact_value_is_default_ (yyn))
           {
             /* Start YYX at -YYN if negative to avoid negative indexes in
@@ -900,7 +893,7 @@ namespace negatron {
             int yychecklim = yylast_ - yyn + 1;
             int yyxend = yychecklim < yyntokens_ ? yychecklim : yyntokens_;
             for (int yyx = yyxbegin; yyx < yyxend; ++yyx)
-              if (yycheck_[yyx + yyn] == yyx && yyx != yy_error_token_
+              if (yycheck_[yyx + yyn] == yyx && yyx != yyterror_
                   && !yy_table_value_is_error_ (yytable_[yyx + yyn]))
                 {
                   if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
@@ -933,7 +926,7 @@ namespace negatron {
 
     std::string yyres;
     // Argument number.
-    std::ptrdiff_t yyi = 0;
+    size_t yyi = 0;
     for (char const* yyp = yyformat; *yyp; ++yyp)
       if (yyp[0] == '%' && yyp[1] == 's' && yyi < yycount)
         {
@@ -957,7 +950,7 @@ namespace negatron {
      -20,   -19,   -20
   };
 
-  const signed char
+  const unsigned char
   Parser::yydefact_[] =
   {
        4,     0,     2,     1,     9,     3,     5,     0,     8,     7,
@@ -976,33 +969,33 @@ namespace negatron {
       -1,     1,     2,     5,     6,     7,     9,    11
   };
 
-  const signed char
+  const unsigned char
   Parser::yytable_[] =
   {
        3,     4,     8,    10,    12
   };
 
-  const signed char
+  const unsigned char
   Parser::yycheck_[] =
   {
        0,     5,     3,    16,    23
   };
 
-  const signed char
+  const unsigned char
   Parser::yystos_[] =
   {
        0,    38,    39,     0,     5,    40,    41,    42,     3,    43,
       16,    44,    23
   };
 
-  const signed char
+  const unsigned char
   Parser::yyr1_[] =
   {
        0,    37,    38,    39,    39,    40,    41,    42,    43,    43,
       44
   };
 
-  const signed char
+  const unsigned char
   Parser::yyr2_[] =
   {
        0,     2,     1,     2,     0,     1,     3,     2,     1,     0,
@@ -1029,8 +1022,8 @@ namespace negatron {
   const unsigned char
   Parser::yyrline_[] =
   {
-       0,   131,   131,   138,   145,   152,   158,   165,   181,   184,
-     187
+       0,   130,   130,   137,   144,   151,   157,   164,   180,   183,
+     186
   };
 
   // Print the state stack on the debug stream.
@@ -1042,7 +1035,7 @@ namespace negatron {
            i = yystack_.begin (),
            i_end = yystack_.end ();
          i != i_end; ++i)
-      *yycdebug_ << ' ' << int (i->state);
+      *yycdebug_ << ' ' << i->state;
     *yycdebug_ << '\n';
   }
 
@@ -1050,7 +1043,7 @@ namespace negatron {
   void
   Parser::yy_reduce_print_ (int yyrule)
   {
-    int yylno = yyrline_[yyrule];
+    unsigned yylno = yyrline_[yyrule];
     int yynrhs = yyr2_[yyrule];
     // Print the symbols being reduced, and their result.
     *yycdebug_ << "Reducing stack by rule " << yyrule - 1
@@ -1102,21 +1095,22 @@ namespace negatron {
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36
     };
-    const int user_token_number_max_ = 291;
+    const unsigned user_token_number_max_ = 291;
+    const token_number_type undef_token_ = 2;
 
-    if (t <= 0)
+    if (static_cast<int> (t) <= yyeof_)
       return yyeof_;
-    else if (t <= user_token_number_max_)
+    else if (static_cast<unsigned> (t) <= user_token_number_max_)
       return translate_table[t];
     else
-      return yy_undef_token_;
+      return undef_token_;
   }
 
 #line 5 "negatron.yy"
 } // negatron
-#line 1118 "parser.cc"
+#line 1112 "parser.cc"
 
-#line 188 "negatron.yy"
+#line 187 "negatron.yy"
 
 void
 negatron::Parser::error(const std::string &err_message )

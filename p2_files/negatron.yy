@@ -3,9 +3,8 @@
 %debug
 %defines
 %define api.namespace {negatron}
-%define parser_class_name {Parser}
-// %define parser_class_name {Parser}
-%define parse.assert
+//%define parser_class_name {Parser}
+%define api.parser.class {Parser}
 %define parse.error verbose
 %output "parser.cc"
 %token-table

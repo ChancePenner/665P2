@@ -1,8 +1,8 @@
-// A Bison parser, made by GNU Bison 3.5.1.
+// A Bison parser, made by GNU Bison 3.4.1.
 
 // Skeleton interface for Bison LALR(1) parsers in C++
 
-// Copyright (C) 2002-2015, 2018-2020 Free Software Foundation, Inc.
+// Copyright (C) 2002-2015, 2018-2019 Free Software Foundation, Inc.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@
 
 #ifndef YY_YY_GRAMMAR_HH_INCLUDED
 # define YY_YY_GRAMMAR_HH_INCLUDED
-// "%code requires" blocks.
-#line 13 "negatron.yy"
+// //                    "%code requires" blocks.
+#line 12 "negatron.yy"
 
    #include <list>
    #include "tokens.hpp"
@@ -65,7 +65,7 @@
 
 #line 67 "grammar.hh"
 
-# include <cassert>
+
 # include <cstdlib> // std::abort
 # include <iostream>
 # include <stdexcept>
@@ -111,20 +111,22 @@
 
 
 
-#ifndef YY_ATTRIBUTE_PURE
-# if defined __GNUC__ && 2 < __GNUC__ + (96 <= __GNUC_MINOR__)
-#  define YY_ATTRIBUTE_PURE __attribute__ ((__pure__))
+#ifndef YY_ATTRIBUTE
+# if (defined __GNUC__                                               \
+      && (2 < __GNUC__ || (__GNUC__ == 2 && 96 <= __GNUC_MINOR__)))  \
+     || defined __SUNPRO_C && 0x5110 <= __SUNPRO_C
+#  define YY_ATTRIBUTE(Spec) __attribute__(Spec)
 # else
-#  define YY_ATTRIBUTE_PURE
+#  define YY_ATTRIBUTE(Spec) /* empty */
 # endif
 #endif
 
+#ifndef YY_ATTRIBUTE_PURE
+# define YY_ATTRIBUTE_PURE   YY_ATTRIBUTE ((__pure__))
+#endif
+
 #ifndef YY_ATTRIBUTE_UNUSED
-# if defined __GNUC__ && 2 < __GNUC__ + (7 <= __GNUC_MINOR__)
-#  define YY_ATTRIBUTE_UNUSED __attribute__ ((__unused__))
-# else
-#  define YY_ATTRIBUTE_UNUSED
-# endif
+# define YY_ATTRIBUTE_UNUSED YY_ATTRIBUTE ((__unused__))
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
@@ -136,11 +138,11 @@
 
 #if defined __GNUC__ && ! defined __ICC && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
 /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
-# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN                            \
-    _Pragma ("GCC diagnostic push")                                     \
-    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")              \
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
+    _Pragma ("GCC diagnostic push") \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
     _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
-# define YY_IGNORE_MAYBE_UNINITIALIZED_END      \
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END \
     _Pragma ("GCC diagnostic pop")
 #else
 # define YY_INITIAL_VALUE(Value) Value
@@ -153,27 +155,6 @@
 # define YY_INITIAL_VALUE(Value) /* Nothing. */
 #endif
 
-#if defined __cplusplus && defined __GNUC__ && ! defined __ICC && 6 <= __GNUC__
-# define YY_IGNORE_USELESS_CAST_BEGIN                          \
-    _Pragma ("GCC diagnostic push")                            \
-    _Pragma ("GCC diagnostic ignored \"-Wuseless-cast\"")
-# define YY_IGNORE_USELESS_CAST_END            \
-    _Pragma ("GCC diagnostic pop")
-#endif
-#ifndef YY_IGNORE_USELESS_CAST_BEGIN
-# define YY_IGNORE_USELESS_CAST_BEGIN
-# define YY_IGNORE_USELESS_CAST_END
-#endif
-
-# ifndef YY_CAST
-#  ifdef __cplusplus
-#   define YY_CAST(Type, Val) static_cast<Type> (Val)
-#   define YY_REINTERPRET_CAST(Type, Val) reinterpret_cast<Type> (Val)
-#  else
-#   define YY_CAST(Type, Val) ((Type) (Val))
-#   define YY_REINTERPRET_CAST(Type, Val) ((Type) (Val))
-#  endif
-# endif
 # ifndef YY_NULLPTR
 #  if defined __cplusplus
 #   if 201103L <= __cplusplus
@@ -193,7 +174,7 @@
 
 #line 5 "negatron.yy"
 namespace negatron {
-#line 197 "grammar.hh"
+#line 178 "grammar.hh"
 
 
 
@@ -206,7 +187,7 @@ namespace negatron {
     /// Symbol semantic values.
     union semantic_type
     {
-#line 53 "negatron.yy"
+#line 52 "negatron.yy"
 
   bool                                  transBool;
   negatron::Token *                     transToken;
@@ -218,7 +199,7 @@ namespace negatron {
   negatron::TypeNode *                  transType;
   negatron::IDNode *                    transID;
 
-#line 222 "grammar.hh"
+#line 203 "grammar.hh"
 
     };
 #else
@@ -292,7 +273,7 @@ namespace negatron {
     enum { empty_symbol = -2 };
 
     /// Internal symbol number for tokens (subsumed by symbol_number_type).
-    typedef signed char token_number_type;
+    typedef unsigned char token_number_type;
 
     /// A complete symbol.
     ///
@@ -383,6 +364,9 @@ namespace negatron {
       /// \a empty when empty.
       symbol_number_type type_get () const YY_NOEXCEPT;
 
+      /// The token.
+      token_type token () const YY_NOEXCEPT;
+
       /// The symbol type.
       /// \a empty_symbol when empty.
       /// An int, not token_number_type, to be able to store empty_symbol.
@@ -433,8 +417,8 @@ namespace negatron {
     Parser (const Parser&);
     Parser& operator= (const Parser&);
 
-    /// Stored state numbers (used for stacks).
-    typedef signed char state_type;
+    /// State numbers.
+    typedef int state_type;
 
     /// Generate an error message.
     /// \param yystate   the state where the error occurred.
@@ -445,7 +429,7 @@ namespace negatron {
     /// Compute post-reduction state.
     /// \param yystate   the current state
     /// \param yysym     the nonterminal to push on the stack
-    static state_type yy_lr_goto_state_ (state_type yystate, int yysym);
+    state_type yy_lr_goto_state_ (state_type yystate, int yysym);
 
     /// Whether the given \c yypact_ value indicates a defaulted state.
     /// \param yyvalue   the value to check
@@ -459,42 +443,40 @@ namespace negatron {
     static const signed char yytable_ninf_;
 
     /// Convert a scanner token number \a t to a symbol number.
-    /// In theory \a t should be a token_type, but character literals
-    /// are valid, yet not members of the token_type enum.
     static token_number_type yytranslate_ (int t);
 
     // Tables.
-    // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
-    // STATE-NUM.
-    static const signed char yypact_[];
+  // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+  // STATE-NUM.
+  static const signed char yypact_[];
 
-    // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
-    // Performed when YYTABLE does not specify something else to do.  Zero
-    // means the default is an error.
-    static const signed char yydefact_[];
+  // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+  // Performed when YYTABLE does not specify something else to do.  Zero
+  // means the default is an error.
+  static const unsigned char yydefact_[];
 
-    // YYPGOTO[NTERM-NUM].
-    static const signed char yypgoto_[];
+  // YYPGOTO[NTERM-NUM].
+  static const signed char yypgoto_[];
 
-    // YYDEFGOTO[NTERM-NUM].
-    static const signed char yydefgoto_[];
+  // YYDEFGOTO[NTERM-NUM].
+  static const signed char yydefgoto_[];
 
-    // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
-    // positive, shift that token.  If negative, reduce the rule whose
-    // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const signed char yytable_[];
+  // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+  // positive, shift that token.  If negative, reduce the rule whose
+  // number is the opposite.  If YYTABLE_NINF, syntax error.
+  static const unsigned char yytable_[];
 
-    static const signed char yycheck_[];
+  static const unsigned char yycheck_[];
 
-    // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
-    // symbol of state STATE-NUM.
-    static const signed char yystos_[];
+  // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
+  // symbol of state STATE-NUM.
+  static const unsigned char yystos_[];
 
-    // YYR1[YYN] -- Symbol number of symbol that rule YYN derives.
-    static const signed char yyr1_[];
+  // YYR1[YYN] -- Symbol number of symbol that rule YYN derives.
+  static const unsigned char yyr1_[];
 
-    // YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.
-    static const signed char yyr2_[];
+  // YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.
+  static const unsigned char yyr2_[];
 
 
     /// Convert the symbol name \a n to a form suitable for a diagnostic.
@@ -504,8 +486,8 @@ namespace negatron {
     /// For a symbol, its name in clear.
     static const char* const yytname_[];
 #if YYDEBUG
-    // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const unsigned char yyrline_[];
+  // YYRLINE[YYN] -- Source line where rule number YYN was defined.
+  static const unsigned char yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r);
     /// Print the state stack on the debug stream.
@@ -557,8 +539,7 @@ namespace negatron {
       symbol_number_type type_get () const YY_NOEXCEPT;
 
       /// The state number used to denote an empty symbol.
-      /// We use the initial state, as it does not have a value.
-      enum { empty_state = 0 };
+      enum { empty_state = -1 };
 
       /// The state.
       /// \a empty when empty.
@@ -580,10 +561,6 @@ namespace negatron {
       /// Assignment, needed by push_back by some old implementations.
       /// Moves the contents of that.
       stack_symbol_type& operator= (stack_symbol_type& that);
-
-      /// Assignment, needed by push_back by other implementations.
-      /// Needed by some other old implementations.
-      stack_symbol_type& operator= (const stack_symbol_type& that);
 #endif
     };
 
@@ -596,7 +573,6 @@ namespace negatron {
       typedef typename S::reverse_iterator iterator;
       typedef typename S::const_reverse_iterator const_iterator;
       typedef typename S::size_type size_type;
-      typedef typename std::ptrdiff_t index_type;
 
       stack (size_type n = 200)
         : seq_ (n)
@@ -605,19 +581,37 @@ namespace negatron {
       /// Random access.
       ///
       /// Index 0 returns the topmost element.
-      const T&
-      operator[] (index_type i) const
+      T&
+      operator[] (size_type i)
       {
-        return seq_[size_type (size () - 1 - i)];
+        return seq_[size () - 1 - i];
       }
 
       /// Random access.
       ///
       /// Index 0 returns the topmost element.
       T&
-      operator[] (index_type i)
+      operator[] (int i)
       {
-        return seq_[size_type (size () - 1 - i)];
+        return operator[] (size_type (i));
+      }
+
+      /// Random access.
+      ///
+      /// Index 0 returns the topmost element.
+      const T&
+      operator[] (size_type i) const
+      {
+        return seq_[size () - 1 - i];
+      }
+
+      /// Random access.
+      ///
+      /// Index 0 returns the topmost element.
+      const T&
+      operator[] (int i) const
+      {
+        return operator[] (size_type (i));
       }
 
       /// Steal the contents of \a t.
@@ -632,7 +626,7 @@ namespace negatron {
 
       /// Pop elements from the stack.
       void
-      pop (std::ptrdiff_t n = 1) YY_NOEXCEPT
+      pop (int n = 1) YY_NOEXCEPT
       {
         for (; 0 < n; --n)
           seq_.pop_back ();
@@ -646,16 +640,10 @@ namespace negatron {
       }
 
       /// Number of elements on the stack.
-      index_type
+      size_type
       size () const YY_NOEXCEPT
       {
-        return index_type (seq_.size ());
-      }
-
-      std::ptrdiff_t
-      ssize () const YY_NOEXCEPT
-      {
-        return std::ptrdiff_t (size ());
+        return seq_.size ();
       }
 
       /// Iterator on top of the stack (going downwards).
@@ -676,20 +664,20 @@ namespace negatron {
       class slice
       {
       public:
-        slice (const stack& stack, index_type range)
+        slice (const stack& stack, int range)
           : stack_ (stack)
           , range_ (range)
         {}
 
         const T&
-        operator[] (index_type i) const
+        operator[] (int i) const
         {
           return stack_[range_ - i];
         }
 
       private:
         const stack& stack_;
-        index_type range_;
+        int range_;
       };
 
     private:
@@ -724,10 +712,6 @@ namespace negatron {
     /// Pop \a n symbols from the stack.
     void yypop_ (int n = 1);
 
-    /// Some specific tokens.
-    static const token_number_type yy_error_token_ = 1;
-    static const token_number_type yy_undef_token_ = 2;
-
     /// Constants.
     enum
     {
@@ -735,6 +719,8 @@ namespace negatron {
       yylast_ = 4,     ///< Last index in yytable_.
       yynnts_ = 8,  ///< Number of nonterminal symbols.
       yyfinal_ = 3, ///< Termination state number.
+      yyterror_ = 1,
+      yyerrcode_ = 256,
       yyntokens_ = 37  ///< Number of tokens.
     };
 
@@ -747,7 +733,7 @@ namespace negatron {
 
 #line 5 "negatron.yy"
 } // negatron
-#line 751 "grammar.hh"
+#line 737 "grammar.hh"
 
 
 
