@@ -1,0 +1,227 @@
+Terminals unused in grammar
+
+    BOOL
+    VOID
+    FALSE
+    STRUCT
+    NULLREF
+    OUTPUT
+    INPUT
+    IF
+    ELSE
+    WHILE
+    RETURN
+    INTLITERAL
+    STRLITERAL
+    LCURLY
+    RCURLY
+    LPAREN
+    RPAREN
+    COMMA
+    DOT
+    DASHDASH
+    DASH
+    STAR
+    SLASH
+    NOT
+    NOTEQUALS
+    LESS
+    LESSEQ
+    ASSIGN
+    AND
+    OR
+
+
+Grammar
+
+    0 $accept: program "end of file"
+
+    1 program: globals
+
+    2 globals: globals decl
+    3        | %empty
+
+    4 decl: varDecl
+
+    5 varDecl: type id SEMICOLON
+
+    6 type: INT maybeRef
+
+    7 maybeRef: REF
+    8         | %empty
+
+    9 id: ID
+
+
+Terminals, with rules where they appear
+
+    "end of file" (0) 0
+    error (256)
+    REF (258) 7
+    BOOL (259)
+    INT <transToken> (260) 6
+    VOID (261)
+    FALSE (262)
+    STRUCT (263)
+    NULLREF (264)
+    OUTPUT (265)
+    INPUT (266)
+    IF (267)
+    ELSE (268)
+    WHILE (269)
+    RETURN (270)
+    ID <transIDToken> (271) 9
+    INTLITERAL (272)
+    STRLITERAL (273)
+    LCURLY (274)
+    RCURLY (275)
+    LPAREN (276)
+    RPAREN (277)
+    SEMICOLON (278) 5
+    COMMA (279)
+    DOT (280)
+    DASHDASH (281)
+    DASH (282)
+    STAR (283)
+    SLASH (284)
+    NOT (285)
+    NOTEQUALS (286)
+    LESS (287)
+    LESSEQ (288)
+    ASSIGN (289)
+    AND (290)
+    OR (291)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (37)
+        on left: 0
+    program <transProgram> (38)
+        on left: 1
+        on right: 0
+    globals <transDeclList> (39)
+        on left: 2 3
+        on right: 1 2
+    decl <transDecl> (40)
+        on left: 4
+        on right: 2
+    varDecl <transVarDecl> (41)
+        on left: 5
+        on right: 4
+    type <transType> (42)
+        on left: 6
+        on right: 5
+    maybeRef <transBool> (43)
+        on left: 7 8
+        on right: 6
+    id <transID> (44)
+        on left: 9
+        on right: 5
+
+
+State 0
+
+    0 $accept: . program "end of file"
+
+    $default  reduce using rule 3 (globals)
+
+    program  go to state 1
+    globals  go to state 2
+
+
+State 1
+
+    0 $accept: program . "end of file"
+
+    "end of file"  shift, and go to state 3
+
+
+State 2
+
+    1 program: globals .
+    2 globals: globals . decl
+
+    INT  shift, and go to state 4
+
+    $default  reduce using rule 1 (program)
+
+    decl     go to state 5
+    varDecl  go to state 6
+    type     go to state 7
+
+
+State 3
+
+    0 $accept: program "end of file" .
+
+    $default  accept
+
+
+State 4
+
+    6 type: INT . maybeRef
+
+    REF  shift, and go to state 8
+
+    $default  reduce using rule 8 (maybeRef)
+
+    maybeRef  go to state 9
+
+
+State 5
+
+    2 globals: globals decl .
+
+    $default  reduce using rule 2 (globals)
+
+
+State 6
+
+    4 decl: varDecl .
+
+    $default  reduce using rule 4 (decl)
+
+
+State 7
+
+    5 varDecl: type . id SEMICOLON
+
+    ID  shift, and go to state 10
+
+    id  go to state 11
+
+
+State 8
+
+    7 maybeRef: REF .
+
+    $default  reduce using rule 7 (maybeRef)
+
+
+State 9
+
+    6 type: INT maybeRef .
+
+    $default  reduce using rule 6 (type)
+
+
+State 10
+
+    9 id: ID .
+
+    $default  reduce using rule 9 (id)
+
+
+State 11
+
+    5 varDecl: type id . SEMICOLON
+
+    SEMICOLON  shift, and go to state 12
+
+
+State 12
+
+    5 varDecl: type id SEMICOLON .
+
+    $default  reduce using rule 5 (varDecl)
