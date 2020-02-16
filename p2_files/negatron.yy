@@ -78,15 +78,16 @@ translations.
 %type <transID>           id
 %type <transBool>         maybeRef
 
+
 /* TODO you will have to
    add an attribute type for
    a couple of the tokens below
 */
 %token               END    0     "end of file"
 %token               REF
-%token               BOOL
+%token <transToken>  BOOL
 %token <transToken>  INT
-%token               VOID
+%token <transToken>  VOID
 %token               FALSE
 %token               STRUCT
 %token               NULLREF
@@ -166,6 +167,18 @@ type 	: INT maybeRef
 	bool isRef = $2;
 	$$ = new IntTypeNode($1->line(), $1->col(), isRef);
 	}
+  | BOOL maybeRef
+  {
+  bool isRef = $2;
+  $$ = new BoolTypeNode($1->line(), $1->col(), isRef);
+  }
+  | VOID
+  {
+    // bool isRef = false;
+    $$ = new VoidTypeNode($1->line(),$1->col(), false);
+  }
+
+
 	/*
 	Note that there are a lot more types for you to fill in!
 	*/
