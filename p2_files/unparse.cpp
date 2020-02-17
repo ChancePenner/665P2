@@ -65,6 +65,7 @@ void IntTypeNode::unparse(std::ostream& out, int indent){
 
 void BoolTypeNode::unparse(std::ostream& out, int indent){
 	out << "bool";
+
 	if(isRefIn)
 	{
 		out << " &";
@@ -74,6 +75,15 @@ void BoolTypeNode::unparse(std::ostream& out, int indent){
 
 void VoidTypeNode::unparse(std::ostream& out, int indent){
 	out << "void";
+	if(isRefIn)
+	{
+		out << " &";
+	}
+}
+
+void StructTypeNode::unparse(std::ostream& out, int indent){
+	out << "struct";
+
 	if(isRefIn)
 	{
 		out << " &";

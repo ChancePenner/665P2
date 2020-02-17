@@ -89,7 +89,7 @@ translations.
 %token <transToken>  INT
 %token <transToken>  VOID
 %token               FALSE
-%token               STRUCT
+%token <transToken>  STRUCT
 %token               NULLREF
 %token               OUTPUT
 %token               INPUT
@@ -100,8 +100,8 @@ translations.
 %token <transIDToken> ID
 %token               INTLITERAL
 %token               STRLITERAL
-%token               LCURLY
-%token               RCURLY
+%token       <transToken>        LCURLY
+%token        <transToken>       RCURLY
 %token               LPAREN
 %token               RPAREN
 %token               SEMICOLON
@@ -177,6 +177,65 @@ type 	: INT maybeRef
     // bool isRef = false;
     $$ = new VoidTypeNode($1->line(),$1->col(), false);
   }
+  | STRUCT id maybeRef // TODO: UNFINISHED, NEED TO DFINE decl
+  {
+    bool isRef = $3;
+    size_t typeLine = $1->line();
+  	size_t typeCol = $1->col();
+    $$ = new VarDeclNode(typeLine, typeCol, $1, $2);
+    // $$ = new StructTypeNode($1->line(), $1->col(), isRef);
+  }
+  ;
+
+
+  // fnDecl : type id formals fnBody
+  // {
+  //
+  // }
+  // ;
+  //
+  // formals : LPAREN RPAREN
+  // {
+  //
+  // }
+  // | LPAREN formalsList RPAREN
+  // {
+  //
+  // }
+  // ;
+
+  // formalsList : formalDecl
+  // {
+  //
+  // }
+  // | formalDecl COMMA formalsList
+  // {
+  //
+  // }
+  // ;
+
+  // formalDecl : type id
+  // {
+  //
+  // }
+  // ;
+
+  // fnBody : LCURLY stmtList RCURLY
+  // {
+  //
+  // }
+  // ;
+  //
+  // stmtList : stmtList stmt
+  // {
+  //
+  // }
+  // | /* epsilon */
+  // {
+  //
+  // }
+  // ;
+
 
 
 	/*

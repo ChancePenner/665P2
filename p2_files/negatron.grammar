@@ -56,7 +56,7 @@ assignExp       ::= loc ASSIGN exp
 
 fncall          ::=  id LPAREN RPAREN   // fn call with no args
                 | id LPAREN actualsList RPAREN  // with args
-                
+
 exp             ::= assignExp
                 | exp DASH exp
                 | exp STAR exp

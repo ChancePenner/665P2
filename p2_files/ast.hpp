@@ -97,13 +97,13 @@ class TypeNode : public ASTNode{
 protected:
 	TypeNode(size_t lineIn, size_t colIn, bool refIn)
 	: ASTNode(lineIn, colIn), myIsReference(refIn){
-		isRefIn = refIn;
+		isRefIn = refIn; //I added this
 	}
 public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
 	//TODO: consider adding an isRef to use in unparse to
 	// indicate if this is a reference type
-	bool isRefIn;
+	bool isRefIn; //I added this
 private:
 	bool myIsReference;
 };
@@ -169,6 +169,14 @@ public:
 class VoidTypeNode : public TypeNode{
 public:
 	VoidTypeNode(size_t lineIn, size_t colIn, bool isRefIn)
+	: TypeNode(lineIn, colIn, isRefIn){
+	}
+	void unparse(std::ostream& out, int indent);
+};
+
+class StructTypeNode : public TypeNode{
+public:
+	StructTypeNode(size_t lineIn, size_t colIn, bool isRefIn)
 	: TypeNode(lineIn, colIn, isRefIn){
 	}
 	void unparse(std::ostream& out, int indent);

@@ -1,0 +1,282 @@
+Terminals unused in grammar
+
+    FALSE
+    NULLREF
+    OUTPUT
+    INPUT
+    IF
+    ELSE
+    WHILE
+    RETURN
+    INTLITERAL
+    STRLITERAL
+    LCURLY
+    RCURLY
+    LPAREN
+    RPAREN
+    COMMA
+    DOT
+    DASHDASH
+    DASH
+    STAR
+    SLASH
+    NOT
+    NOTEQUALS
+    LESS
+    LESSEQ
+    ASSIGN
+    AND
+    OR
+
+
+Grammar
+
+    0 $accept: program "end of file"
+
+    1 program: globals
+
+    2 globals: globals decl
+    3        | %empty
+
+    4 decl: varDecl
+
+    5 varDecl: type id SEMICOLON
+
+    6 type: INT maybeRef
+    7     | BOOL maybeRef
+    8     | VOID
+    9     | STRUCT id maybeRef
+
+   10 maybeRef: REF
+   11         | %empty
+
+   12 id: ID
+
+
+Terminals, with rules where they appear
+
+    "end of file" (0) 0
+    error (256)
+    REF (258) 10
+    BOOL <transToken> (259) 7
+    INT <transToken> (260) 6
+    VOID <transToken> (261) 8
+    FALSE (262)
+    STRUCT <transToken> (263) 9
+    NULLREF (264)
+    OUTPUT (265)
+    INPUT (266)
+    IF (267)
+    ELSE (268)
+    WHILE (269)
+    RETURN (270)
+    ID <transIDToken> (271) 12
+    INTLITERAL (272)
+    STRLITERAL (273)
+    LCURLY <transToken> (274)
+    RCURLY <transToken> (275)
+    LPAREN (276)
+    RPAREN (277)
+    SEMICOLON (278) 5
+    COMMA (279)
+    DOT (280)
+    DASHDASH (281)
+    DASH (282)
+    STAR (283)
+    SLASH (284)
+    NOT (285)
+    NOTEQUALS (286)
+    LESS (287)
+    LESSEQ (288)
+    ASSIGN (289)
+    AND (290)
+    OR (291)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (37)
+        on left: 0
+    program <transProgram> (38)
+        on left: 1
+        on right: 0
+    globals <transDeclList> (39)
+        on left: 2 3
+        on right: 1 2
+    decl <transDecl> (40)
+        on left: 4
+        on right: 2
+    varDecl <transVarDecl> (41)
+        on left: 5
+        on right: 4
+    type <transType> (42)
+        on left: 6 7 8 9
+        on right: 5
+    maybeRef <transBool> (43)
+        on left: 10 11
+        on right: 6 7 9
+    id <transID> (44)
+        on left: 12
+        on right: 5 9
+
+
+State 0
+
+    0 $accept: . program "end of file"
+
+    $default  reduce using rule 3 (globals)
+
+    program  go to state 1
+    globals  go to state 2
+
+
+State 1
+
+    0 $accept: program . "end of file"
+
+    "end of file"  shift, and go to state 3
+
+
+State 2
+
+    1 program: globals .
+    2 globals: globals . decl
+
+    BOOL    shift, and go to state 4
+    INT     shift, and go to state 5
+    VOID    shift, and go to state 6
+    STRUCT  shift, and go to state 7
+
+    $default  reduce using rule 1 (program)
+
+    decl     go to state 8
+    varDecl  go to state 9
+    type     go to state 10
+
+
+State 3
+
+    0 $accept: program "end of file" .
+
+    $default  accept
+
+
+State 4
+
+    7 type: BOOL . maybeRef
+
+    REF  shift, and go to state 11
+
+    $default  reduce using rule 11 (maybeRef)
+
+    maybeRef  go to state 12
+
+
+State 5
+
+    6 type: INT . maybeRef
+
+    REF  shift, and go to state 11
+
+    $default  reduce using rule 11 (maybeRef)
+
+    maybeRef  go to state 13
+
+
+State 6
+
+    8 type: VOID .
+
+    $default  reduce using rule 8 (type)
+
+
+State 7
+
+    9 type: STRUCT . id maybeRef
+
+    ID  shift, and go to state 14
+
+    id  go to state 15
+
+
+State 8
+
+    2 globals: globals decl .
+
+    $default  reduce using rule 2 (globals)
+
+
+State 9
+
+    4 decl: varDecl .
+
+    $default  reduce using rule 4 (decl)
+
+
+State 10
+
+    5 varDecl: type . id SEMICOLON
+
+    ID  shift, and go to state 14
+
+    id  go to state 16
+
+
+State 11
+
+   10 maybeRef: REF .
+
+    $default  reduce using rule 10 (maybeRef)
+
+
+State 12
+
+    7 type: BOOL maybeRef .
+
+    $default  reduce using rule 7 (type)
+
+
+State 13
+
+    6 type: INT maybeRef .
+
+    $default  reduce using rule 6 (type)
+
+
+State 14
+
+   12 id: ID .
+
+    $default  reduce using rule 12 (id)
+
+
+State 15
+
+    9 type: STRUCT id . maybeRef
+
+    REF  shift, and go to state 11
+
+    $default  reduce using rule 11 (maybeRef)
+
+    maybeRef  go to state 17
+
+
+State 16
+
+    5 varDecl: type id . SEMICOLON
+
+    SEMICOLON  shift, and go to state 18
+
+
+State 17
+
+    9 type: STRUCT id maybeRef .
+
+    $default  reduce using rule 9 (type)
+
+
+State 18
+
+    5 varDecl: type id SEMICOLON .
+
+    $default  reduce using rule 5 (varDecl)
