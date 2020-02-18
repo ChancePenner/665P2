@@ -6,19 +6,18 @@ program         ::= globals
 globals         ::= globals decl
                 | /* epsilon */
 
-decl            ::= varDecl SEMICOLON //Done
+decl            ::= varDecl SEMICOLON
                 | structDecl SEMICOLON
                 | fnDecl
 
-varDecl         ::= type id //Done
+varDecl         ::= type id
 
+type            ::= INT maybeRef
+                |   BOOL maybeRef
+                |   VOID
+                |   STRUCT id maybeRef
 
-type            ::= INT maybeRef //Done
-                |   BOOL maybeRef //Done
-                |   VOID          //Done
-                |   STRUCT id maybeRef //Done
-
-maybeRef        ::= REF //Done
+maybeRef        ::= REF
                 | /* epsilon */
 
 structDecl      ::= STRUCT id LCURLY structBody RCURLY
@@ -72,7 +71,7 @@ exp             ::= assignExp
                 | term
 
 actualsList     ::= exp
-                | actualList COMMA exp
+                | actualsList COMMA exp
 
 term            ::= loc
                 | INTLITERAL

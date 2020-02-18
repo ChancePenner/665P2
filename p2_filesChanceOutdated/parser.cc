@@ -677,7 +677,7 @@ namespace negatron {
     bool isRef = (yystack_[0].value.transBool);
     size_t typeLine = (yystack_[2].value.transToken)->line();
   	size_t typeCol = (yystack_[2].value.transToken)->col();
-    (yylhs.value.transType) = new VarDeclNode(typeLine, typeCol, (yystack_[1].value.transID), (yystack_[1].value.transID));
+    (yylhs.value.transType) = new VarDeclNode(typeLine, typeCol, (yystack_[2].value.transToken), (yystack_[1].value.transID));
     // $$ = new StructTypeNode($1->line(), $1->col(), isRef);
   }
 #line 684 "parser.cc"

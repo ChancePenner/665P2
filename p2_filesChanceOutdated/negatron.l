@@ -48,27 +48,27 @@ input	{ return makeBareToken(TokenKind::INPUT); }
 output	{ return makeBareToken(TokenKind::OUTPUT); }
 struct	{ return makeBareToken(TokenKind::STRUCT); }
 nullref { return makeBareToken(TokenKind::NULLREF); }
-"{"		{ return makeBareToken(TokenKind::LCURLY); }//Done
-"}"		{ return makeBareToken(TokenKind::RCURLY); }//Done
-"("		{ return makeBareToken(TokenKind::LPAREN); }//Done
-")"		{ return makeBareToken(TokenKind::RPAREN); }//Done
+"{"		{ return makeBareToken(TokenKind::LCURLY); }
+"}"		{ return makeBareToken(TokenKind::RCURLY); }
+"("		{ return makeBareToken(TokenKind::LPAREN); }
+")"		{ return makeBareToken(TokenKind::RPAREN); }
 ";"		{ return makeBareToken(TokenKind::SEMICOLON); }
 ","		{ return makeBareToken(TokenKind::COMMA); }
 "."		{ return makeBareToken(TokenKind::DOT); }
 "--"	{ return makeBareToken(TokenKind::DASHDASH); }
-"-"		{ return makeBareToken(TokenKind::DASH); } //Done
-"*"		{ return makeBareToken(TokenKind::STAR); }//Done
-"/"		{ return makeBareToken(TokenKind::SLASH); }//Done
-"!"		{ return makeBareToken(TokenKind::NOT); }//Done
+"-"		{ return makeBareToken(TokenKind::DASH); }
+"*"		{ return makeBareToken(TokenKind::STAR); }
+"/"		{ return makeBareToken(TokenKind::SLASH); }
+"!"		{ return makeBareToken(TokenKind::NOT); }
 "&"	{ return makeBareToken(TokenKind::REF); }
 "&&"	{ return makeBareToken(TokenKind::AND); }
 "||"	{ return makeBareToken(TokenKind::OR); }
-"!="	{ return makeBareToken(TokenKind::NOTEQUALS); }//Done
-"<"		{ return makeBareToken(TokenKind::LESS); }//Done
-"<="	{ return makeBareToken(TokenKind::LESSEQ); }//Done
-"="		{ return makeBareToken(TokenKind::ASSIGN); }//Done
-({LETTER}|_)({LETTER}|{DIGIT}|_)*		{
-		yylval->transToken =
+"!="	{ return makeBareToken(TokenKind::NOTEQUALS); }
+"<"		{ return makeBareToken(TokenKind::LESS); }
+"<="	{ return makeBareToken(TokenKind::LESSEQ); }
+"="		{ return makeBareToken(TokenKind::ASSIGN); }
+({LETTER}|_)({LETTER}|{DIGIT}|_)*		{ 
+		yylval->transToken = 
 		    new IDToken(lineNum, charNum, yytext);
 		charNum += yyleng;
 		return TokenKind::ID;
@@ -87,7 +87,7 @@ nullref { return makeBareToken(TokenKind::NULLREF); }
 				Report::warn(lineNum, charNum, msg);
 				intVal = INT_MAX;
 			}
-			yylval->transToken =
+			yylval->transToken = 
 			  new IntLitToken(lineNum, charNum, intVal);
 			charNum += yyleng;
 			return TokenKind::INTLITERAL;
@@ -101,14 +101,14 @@ nullref { return makeBareToken(TokenKind::NULLREF); }
 
 \"({NOT_NL_OR_QUOTE_OR_ESC}|\\{ESC_CHAR})* {
 		// unterminated string
-		Report::fatal(lineNum, charNum,
+		Report::fatal(lineNum, charNum, 
 		  "Unterminated string literal ignored");
 		charNum += yyleng;
 		}
 
 \"({NOT_NL_OR_QUOTE_OR_ESC}|\\{ESC_CHAR})*\\{NOT_NL_OR_ESC_CHAR}({NOT_NL_OR_QUOTE})*\" {
 		// bad escape character
-		Report::fatal(lineNum, charNum,
+		Report::fatal(lineNum, charNum, 
 		  "string literal with bad escaped character ignored");
 		charNum += yyleng;
 		}

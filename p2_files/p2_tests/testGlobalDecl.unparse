@@ -1,5 +1,8 @@
 int global1;
 int & global2;
-bool & global3;
-void test1;
-struct & instance;
+bool global3;
+bool & global4;
+void whatever;
+void global5;
+struct hello myfriend;
+struct hello & myBestFriend;

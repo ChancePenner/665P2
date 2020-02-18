@@ -3,8 +3,8 @@
 %debug
 %defines
 %define api.namespace {negatron}
+//%define parser_class_name {Parser}
 %define api.parser.class {Parser}
-%define parse.assert
 %define parse.error verbose
 %output "parser.cc"
 %token-table
@@ -78,17 +78,18 @@ translations.
 %type <transID>           id
 %type <transBool>         maybeRef
 
+
 /* TODO you will have to
    add an attribute type for
    a couple of the tokens below
 */
 %token               END    0     "end of file"
-%token <transBool>   REF
-%token <transType>   BOOL
-%token <transType>   INT
-%token <transType>   VOID
+%token               REF
+%token <transToken>  BOOL
+%token <transToken>  INT
+%token <transToken>  VOID
 %token               FALSE
-%token <transType>   STRUCT
+%token <transToken>  STRUCT
 %token               NULLREF
 %token               OUTPUT
 %token               INPUT
@@ -96,14 +97,14 @@ translations.
 %token               ELSE
 %token               WHILE
 %token               RETURN
-%token <transIDToken>ID
+%token <transIDToken> ID
 %token               INTLITERAL
 %token               STRLITERAL
-%token               LCURLY
-%token               RCURLY
+%token       <transToken>        LCURLY
+%token        <transToken>       RCURLY
 %token               LPAREN
 %token               RPAREN
-%token <transVarDecl>SEMICOLON
+%token               SEMICOLON
 %token               COMMA
 %token               DOT
 %token               DASHDASH
@@ -118,17 +119,8 @@ translations.
 %token               AND
 %token               OR
 
-//non associative
-%nonassoc LESSEQ LESS NOTEQUALS
-//right associative
-%right ASSIGN //Lowest
-//left associative
-%left OR
-%left AND
-%left LCURLY RCURLY LPAREN RPAREN
-%left '+' DASH
-%left STAR SLASH
-%precedence NEG NOT // Highest
+
+
 /* TODO: Make sure to add precedence and associativity
  * declarations!
 */
@@ -141,7 +133,7 @@ program 	: globals
 	$$ = new ProgramNode($1);
 	*root = $$;
 	}
-	;
+  	;
 
 globals 	: globals decl
 	{
@@ -157,233 +149,13 @@ globals 	: globals decl
 	}
 	;
 
-decl : varDecl SEMICOLON
+decl : varDecl
 	{
-    size_t typeLine = $1->line();
-  	size_t typeCol = $1->col();
-  	$$ = new DeclNode(typeLine, typeCol, $1);
+	//Make sure to fill out this rule
+	// (as well as any other empty rule!)
 	}
-  | structDecl SEMICOLON
-  {
 
-  }
-  | fnDecl
-  {
-
-  }
-
-structDecl : STRUCT id LCURLY structBody RCURLY
-           {
-
-           }
-
-structBody : structBody varDecl SEMICOLON
-           {
-
-           }
-           | varDecl SEMICOLON
-           {
-
-           }
-
-fnDecl : type id formals fnBody
-       {
-
-       }
-
-formals   : LPAREN RPAREN
-          {
-
-          }
-          | LPAREN formalsList RPAREN
-          {
-
-          }
-
-formalsList : formalDecl
-            {
-
-            }
-            | formalDecl COMMA formalsList
-            {
-
-            }
-
-formalDecl : type id
-           {
-
-           }
-
-fnBody : LCURLY stmtList RCURLY
-       {
-
-       }
-
-stmtList : stmtList stmt
-         {
-
-         }
-         | //epsilon
-         {
-
-         }
-
-stmt : varDecl SEMICOLON
-     {
-
-     }
-     | assignExp SEMICOLON
-     {
-
-     }
-     | loc DASHDASH SEMICOLON
-     {
-
-     }
-     | INPUT loc SEMICOLON
-     {
-
-     }
-     | OUTPUT exp SEMICOLON
-     {
-
-     }
-     | IF LPAREN exp RPAREN LCURLY stmtList RCURLY
-     {
-
-     }
-     | IF LPAREN exp RPAREN LCURLY stmtList RCURLY ELSE LCURLY stmtList RCURLY
-     {
-
-     }
-     | WHILE LPAREN exp RPAREN LCURLY stmtList RCURLY
-     {
-
-     }
-     | RETURN exp SEMICOLON
-     {
-
-     }
-     | RETURN SEMICOLON
-     {
-
-     }
-     | fncall SEMICOLON
-     {
-
-     }
-
-assignExp : loc ASSIGN exp
-          {
-
-          }
-
-exp : assignExp
-    {
-
-    }
-    | exp DASH exp
-    {
-
-    }
-    | exp STAR exp
-    {
-
-    }
-    | exp SLASH exp
-    {
-
-    }
-    | exp AND exp
-    {
-
-    }
-    | exp OR exp
-    {
-
-    }
-    | exp NOTEQUALS exp
-    {
-
-    }
-    | exp LESS exp
-    {
-
-    }
-    | exp LESSEQ exp
-    {
-
-    }
-    | NOT exp
-    {
-
-    }
-    | DASH term
-    {
-
-    }
-    | term
-    {
-
-    }
-
-term : loc
-     {
-
-     }
-     | INTLITERAL
-     {
-
-     }
-     | STRLITERAL
-     {
-
-     }
-     | FALSE
-     {
-
-     }
-     | NULLREF
-     {
-
-     }
-     | LPAREN exp RPAREN
-     {
-
-     }
-     | fncall
-     {
-
-     }
-
-loc : id
-    {
-
-    }
-    | loc DOT id
-    {
-
-    }
-
-fncall : id LPAREN RPAREN
-       {
-
-       }
-       | id LPAREN actualsList RPAREN
-       {
-
-       }
-
-actualsList : exp
-            {
-
-            }
-            | actualsList COMMA exp
-            {
-
-            }
-
-varDecl : type id
+varDecl : type id SEMICOLON
 	{
 	size_t typeLine = $1->line();
 	size_t typeCol = $1->col();
@@ -397,18 +169,75 @@ type 	: INT maybeRef
 	}
   | BOOL maybeRef
   {
-    bool isRef = $2;
-  	$$ = new BoolTypeNode($1->line(), $1->col(), isRef);
+  bool isRef = $2;
+  $$ = new BoolTypeNode($1->line(), $1->col(), isRef);
   }
   | VOID
   {
-    $$ = new VoidTypeNode($1->line(), $1->col());
+    // bool isRef = false;
+    $$ = new VoidTypeNode($1->line(),$1->col(), false);
   }
-  | STRUCT id maybeRef
+  | STRUCT id maybeRef // TODO: UNFINISHED, NEED TO DFINE decl
   {
     bool isRef = $3;
-  	$$ = new StructTypeNode($1->line(), $1->col(), $2, isRef);
+    size_t typeLine = $1->line();
+  	size_t typeCol = $1->col();
+    $$ = new VarDeclNode(typeLine, typeCol, $1, $2);
+    // $$ = new StructTypeNode($1->line(), $1->col(), isRef);
   }
+  ;
+
+
+  // fnDecl : type id formals fnBody
+  // {
+  //
+  // }
+  // ;
+  //
+  // formals : LPAREN RPAREN
+  // {
+  //
+  // }
+  // | LPAREN formalsList RPAREN
+  // {
+  //
+  // }
+  // ;
+
+  // formalsList : formalDecl
+  // {
+  //
+  // }
+  // | formalDecl COMMA formalsList
+  // {
+  //
+  // }
+  // ;
+
+  // formalDecl : type id
+  // {
+  //
+  // }
+  // ;
+
+  // fnBody : LCURLY stmtList RCURLY
+  // {
+  //
+  // }
+  // ;
+  //
+  // stmtList : stmtList stmt
+  // {
+  //
+  // }
+  // | /* epsilon */
+  // {
+  //
+  // }
+  // ;
+
+
+
 	/*
 	Note that there are a lot more types for you to fill in!
 	*/

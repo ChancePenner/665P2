@@ -40,18 +40,12 @@ void ProgramNode::unparse(std::ostream& out, int indent){
 	}
 }
 
-void DeclNode::unparse(std::ostream& out, int indent)
-{
-	doIndent(out, indent);
-	this->m_Decl->unparse(out, 0);
-	out << ";\n";
-}
-
 void VarDeclNode::unparse(std::ostream& out, int indent){
 	doIndent(out, indent);
 	this->myType->unparse(out, 0);
 	out << " ";
 	this->myId->unparse(out, 0);
+	out << ";\n";
 }
 
 void IDNode::unparse(std::ostream& out, int indent){
@@ -60,39 +54,42 @@ void IDNode::unparse(std::ostream& out, int indent){
 
 void IntTypeNode::unparse(std::ostream& out, int indent){
 	out << "int";
-	if(isRef())
+	if(isRefIn)
 	{
-		doIndent(out, indent);
-		out << " ";
-		out << "&";
+		out << " &";
 	}
 }
+
+
+
 
 void BoolTypeNode::unparse(std::ostream& out, int indent){
 	out << "bool";
-	if(isRef())
+
+	if(isRefIn)
 	{
-		doIndent(out, indent);
-		out << " ";
-		out << "&";
+		out << " &";
 	}
 }
 
+
 void VoidTypeNode::unparse(std::ostream& out, int indent){
 	out << "void";
+	if(isRefIn)
+	{
+		out << " &";
+	}
 }
 
 void StructTypeNode::unparse(std::ostream& out, int indent){
 	out << "struct";
-	doIndent(out, indent);
-	out << " ";
-	this->myId->unparse(out, 0);
-	if(isRef())
+
+	if(isRefIn)
 	{
-		doIndent(out, indent);
-		out << " ";
-		out << "&";
+		out << " &";
 	}
 }
+
+
 
 } // End namespace negatron

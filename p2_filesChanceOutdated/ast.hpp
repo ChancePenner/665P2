@@ -3,7 +3,6 @@
 
 #include <ostream>
 #include <list>
-#include <iostream>
 #include "tokens.hpp"
 
 // **********************************************************************
@@ -28,6 +27,8 @@ public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
 	size_t line(){ return l; }
 	size_t col() { return c; }
+
+
 
 	/**
 	* Return a string specifying the position this node begins.
@@ -69,15 +70,10 @@ private:
 **/
 class DeclNode : public ASTNode{
 public:
-	DeclNode(size_t line, size_t col, DeclNode* mVar)
-	: ASTNode(line, col), m_Decl(mVar) {
-	}
 	DeclNode(size_t line, size_t col)
 	: ASTNode(line, col) {
 	}
-	void unparse(std::ostream& out, int indent);
-private:
-	DeclNode* m_Decl;
+	void unparse(std::ostream& out, int indent) override = 0;
 };
 
 /**  \class ExpNode
@@ -101,18 +97,13 @@ class TypeNode : public ASTNode{
 protected:
 	TypeNode(size_t lineIn, size_t colIn, bool refIn)
 	: ASTNode(lineIn, colIn), myIsReference(refIn){
-	}
-
-	TypeNode(size_t lineIn, size_t colIn)
-	: ASTNode(lineIn, colIn){
+		isRefIn = refIn; //I added this
 	}
 public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
-	virtual bool isRef(){
-		return myIsReference;
-	}
 	//TODO: consider adding an isRef to use in unparse to
 	// indicate if this is a reference type
+	bool isRefIn; //I added this
 private:
 	bool myIsReference;
 };
@@ -164,6 +155,9 @@ public:
 	void unparse(std::ostream& out, int indent);
 };
 
+
+
+
 class BoolTypeNode : public TypeNode{
 public:
 	BoolTypeNode(size_t lineIn, size_t colIn, bool isRefIn)
@@ -174,21 +168,20 @@ public:
 
 class VoidTypeNode : public TypeNode{
 public:
-	VoidTypeNode(size_t lineIn, size_t colIn)
-	: TypeNode(lineIn, colIn){
+	VoidTypeNode(size_t lineIn, size_t colIn, bool isRefIn)
+	: TypeNode(lineIn, colIn, isRefIn){
 	}
 	void unparse(std::ostream& out, int indent);
 };
 
 class StructTypeNode : public TypeNode{
 public:
-	StructTypeNode(size_t lineIn, size_t colIn,IDNode * id, bool isRefIn)
-	: TypeNode(lineIn, colIn, isRefIn),myId(id){
+	StructTypeNode(size_t lineIn, size_t colIn, bool isRefIn)
+	: TypeNode(lineIn, colIn, isRefIn){
 	}
 	void unparse(std::ostream& out, int indent);
-private:
-	IDNode * myId;
 };
 
 } //End namespace negatron
+
 #endif
